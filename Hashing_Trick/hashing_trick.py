@@ -1,4 +1,5 @@
 import sys
+import argparse
 # Usage: 'python hashing_trick.py path_to_data [flag]'
 # The format of the data should be the same as libsvm
 # Flag:
@@ -24,16 +25,11 @@ def unsigned_hashing(path, N):
     return res_lst
 
 
-if len(sys.argv) < 3 or len(sys.argv) > 4:
-    print "Usage python hashing_trick.py path_to_data [N] [flag]"
+parser = argparse.ArgumentParser(description = 'Options for this script')
+parser.add_argument('-i', dest = 'path_input', help = 'input path')
+parser.add_argument('-N', default = 10000, type = int, help = 'number of indexes after hashing')
+parser.add_argument('-f', dest = 'flag', default = 1, type = int, help = 'flag, 1 is unsigned hashing, 2 is signed hashing, 3 is multiple hashing')
 
-flag = 1
-if len(sys.argv) == 4:
-    flag = int(sys.argv[3])
-
-N =  10000
-if len(sys.argv) >= 3:
-    N = int(sys.argv[2])
-
-if flag == 1:
-    data = unsigned_hashing(sys.argv[1], N)
+args = parser.parse_args(sys.argv[1:])
+if args.flag == 1:
+    unsigned_hashing(args.path_input, args.N)
